@@ -5,12 +5,15 @@ class MarkdownApp {
     this.searchTimeout = null;
     this.expandedFolders = new Set();
     this.theme = localStorage.getItem('theme') || 'light';
+    this.sidebarWidth = parseInt(localStorage.getItem('sidebarWidth')) || 280;
+    this.isResizing = false;
     
     this.init();
   }
 
   async init() {
     this.setupTheme();
+    this.setupSidebarWidth();
     this.setupEventListeners();
     await this.loadFileTree();
     this.setupKeyboardShortcuts();
@@ -22,6 +25,51 @@ class MarkdownApp {
     if (themeSelect) {
       themeSelect.value = this.theme;
     }
+  }
+
+  setupSidebarWidth() {
+    document.documentElement.style.setProperty('--sidebar-width', `${this.sidebarWidth}px`);
+  }
+
+  setupSidebarResize() {
+    const resizeHandle = document.getElementById('sidebarResizeHandle');
+    if (!resizeHandle) return;
+
+    resizeHandle.addEventListener('mousedown', (e) => {
+      this.isResizing = true;
+      resizeHandle.classList.add('dragging');
+      document.body.style.cursor = 'col-resize';
+      document.body.style.userSelect = 'none';
+      
+      const startX = e.clientX;
+      const startWidth = this.sidebarWidth;
+
+      const handleMouseMove = (e) => {
+        if (!this.isResizing) return;
+        
+        const deltaX = e.clientX - startX;
+        const newWidth = Math.max(200, Math.min(500, startWidth + deltaX));
+        
+        this.sidebarWidth = newWidth;
+        this.setupSidebarWidth();
+      };
+
+      const handleMouseUp = () => {
+        this.isResizing = false;
+        resizeHandle.classList.remove('dragging');
+        document.body.style.cursor = '';
+        document.body.style.userSelect = '';
+        
+        // Save to localStorage
+        localStorage.setItem('sidebarWidth', this.sidebarWidth.toString());
+        
+        document.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('mouseup', handleMouseUp);
+      };
+
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+    });
   }
 
   setupEventListeners() {
@@ -42,6 +90,9 @@ class MarkdownApp {
         }
       });
     }
+
+    // Sidebar resize functionality
+    this.setupSidebarResize();
 
     // Window resize
     window.addEventListener('resize', () => {
@@ -128,6 +179,7 @@ class MarkdownApp {
             <div class="tree-label" onclick="app.toggleDirectory('${item.path}')">
               <span class="toggle ${isExpanded ? 'expanded' : ''}">▶</span>
               <span class="icon">📁</span>
+              ${item.hasMarkdown ? '<span class="markdown-indicator"></span>' : ''}
               <span class="name" title="${item.name}">${item.name}</span>
             </div>
             <div class="tree-children ${isExpanded ? 'expanded' : ''}" id="${itemId}-children">

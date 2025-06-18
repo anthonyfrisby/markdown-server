@@ -6,7 +6,7 @@ module.exports = {
   rootPath: '/Users/antfris/command',
   
   // Server configuration
-  port: 3001,
+  port: 5001,
   
   // File watching options
   watchOptions: {
