@@ -7,6 +7,7 @@ class MarkdownApp {
     this.theme = localStorage.getItem('theme') || 'light';
     this.sidebarWidth = parseInt(localStorage.getItem('sidebarWidth')) || 280;
     this.isResizing = false;
+    this.watcherActive = false;
     
     this.init();
   }
@@ -17,6 +18,7 @@ class MarkdownApp {
     this.setupEventListeners();
     await this.loadFileTree();
     this.setupKeyboardShortcuts();
+    await this.checkWatcherStatus();
   }
 
   setupTheme() {
@@ -435,6 +437,70 @@ class MarkdownApp {
       }
     }
   }
+
+  async checkWatcherStatus() {
+    try {
+      const response = await fetch('/api/health');
+      const data = await response.json();
+      // For now, assume watcher is inactive on startup
+      // We could enhance the health endpoint to include watcher status
+      this.watcherActive = false;
+      this.updateWatcherButton();
+    } catch (error) {
+      console.error('Error checking watcher status:', error);
+      this.watcherActive = false;
+      this.updateWatcherButton();
+    }
+  }
+
+  async toggleFileWatcher() {
+    const button = document.getElementById('watchToggleBtn');
+    if (!button) return;
+
+    button.classList.add('loading');
+    
+    try {
+      const endpoint = this.watcherActive ? '/api/watch/stop' : '/api/watch/start';
+      const response = await fetch(endpoint, { method: 'POST' });
+      const data = await response.json();
+      
+      if (data.success) {
+        this.watcherActive = !this.watcherActive;
+        this.updateWatcherButton();
+        
+        // Show feedback
+        const action = this.watcherActive ? 'started' : 'stopped';
+        console.log(`File watching ${action}`);
+      } else {
+        this.showError(`Failed to toggle file watcher: ${data.error}`);
+      }
+    } catch (error) {
+      console.error('Error toggling file watcher:', error);
+      this.showError('Failed to toggle file watcher');
+    } finally {
+      button.classList.remove('loading');
+    }
+  }
+
+  updateWatcherButton() {
+    const button = document.getElementById('watchToggleBtn');
+    const activeIcon = button?.querySelector('.watch-icon-active');
+    const inactiveIcon = button?.querySelector('.watch-icon-inactive');
+    
+    if (!button || !activeIcon || !inactiveIcon) return;
+
+    if (this.watcherActive) {
+      button.classList.add('active');
+      button.title = 'Live file watching active - Click to stop';
+      activeIcon.style.display = 'block';
+      inactiveIcon.style.display = 'none';
+    } else {
+      button.classList.remove('active');
+      button.title = 'Live file watching inactive - Click to start';
+      activeIcon.style.display = 'none';
+      inactiveIcon.style.display = 'block';
+    }
+  }
 }
 
 // Global utility functions
@@ -477,6 +543,12 @@ function toggleTableOfContents() {
 function refreshFileTree() {
   if (window.app) {
     window.app.refreshFileTree();
+  }
+}
+
+function toggleFileWatcher() {
+  if (window.app) {
+    window.app.toggleFileWatcher();
   }
 }
 

@@ -5,6 +5,38 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2025-06-18
+
+### Added
+- **File Watcher Toggle Button**
+  - Interactive eye icon button in sidebar header next to refresh button
+  - Visual states: green eye (active watching) vs gray eye with slash (inactive)
+  - Toggle file watching on/off with single click
+  - Real-time directory change detection when enabled
+  - Tooltip feedback showing current status and next action
+  
+- **Enhanced Directory Watching**
+  - Added `addDir` and `unlinkDir` event handlers to chokidar file watcher
+  - Automatic cache invalidation when directories are created/deleted
+  - Fixes issue where new folders wouldn't appear until server restart
+  
+- **Improved User Experience**
+  - File watcher status persists across app usage
+  - Loading states and error handling for watcher toggle
+  - Seamless integration with existing sidebar controls
+  - User control over performance vs real-time updates trade-off
+
+### Fixed
+- Directory structure changes now reflect immediately when file watching is enabled
+- Refresh button now works properly for newly created/deleted folders
+- Cache invalidation properly triggered by directory changes
+
+### Technical Details
+- Enhanced `lib/fileScanner.js` with comprehensive directory event handling
+- Added watcher status checking and toggle functionality to frontend
+- New CSS styling for watch toggle button states and animations
+- API endpoints `/api/watch/start` and `/api/watch/stop` now fully utilized
+
 ## [1.0.0] - 2025-06-18
 
 ### Added
