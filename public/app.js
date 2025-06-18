@@ -19,6 +19,7 @@ class MarkdownApp {
     await this.loadFileTree();
     this.setupKeyboardShortcuts();
     await this.checkWatcherStatus();
+    this.handleInitialRoute();
   }
 
   setupTheme() {
@@ -247,6 +248,10 @@ class MarkdownApp {
           history.pushState({ file: filePath }, '', `#${filePath}`);
         }
         
+        // Update document title
+        const fileName = filePath.split('/').pop() || 'Markdown Server';
+        document.title = `${fileName} - Markdown Server`;
+        
         // Setup table of contents if available
         if (data.data.tableOfContents && data.data.tableOfContents.length > 0) {
           this.setupTableOfContents(data.data.tableOfContents);
@@ -419,6 +424,7 @@ class MarkdownApp {
     
     this.currentFile = null;
     this.updateActiveFile('');
+    document.title = 'Markdown Server';
     history.pushState({}, '', location.pathname);
   }
 
@@ -500,6 +506,42 @@ class MarkdownApp {
       activeIcon.style.display = 'none';
       inactiveIcon.style.display = 'block';
     }
+  }
+
+  handleInitialRoute() {
+    const hash = window.location.hash.slice(1); // Remove # symbol
+    if (hash && hash.trim() !== '') {
+      // Validate file exists in tree before loading
+      if (this.validateFilePath(hash)) {
+        this.loadFile(hash, false); // Don't update history since we're loading from URL
+        this.expandToFile(hash);
+      } else {
+        console.warn(`File not found in tree: ${hash}`);
+        // Clear invalid hash
+        history.replaceState({}, '', location.pathname);
+      }
+    }
+  }
+
+  validateFilePath(filePath) {
+    if (!this.fileTree || !filePath) return false;
+    
+    // Recursively search for file in tree
+    const findFile = (items, targetPath) => {
+      for (const item of items) {
+        if (item.path === targetPath && item.type === 'file') {
+          return true;
+        }
+        if (item.type === 'directory' && item.children) {
+          if (findFile(item.children, targetPath)) {
+            return true;
+          }
+        }
+      }
+      return false;
+    };
+    
+    return findFile(this.fileTree, filePath);
   }
 }
 

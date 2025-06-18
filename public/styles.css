@@ -200,6 +200,7 @@ body {
   width: var(--sidebar-width, 280px);
   min-width: 200px;
   max-width: 500px;
+  min-height: 100vh;
   background-color: var(--bg-secondary);
   border-right: 1px solid var(--border-color);
   display: flex;
@@ -333,6 +334,7 @@ body {
   cursor: pointer;
   transition: all 0.2s ease;
   user-select: none;
+  position: relative;
 }
 
 .tree-item.directory > .tree-label:hover {
@@ -397,10 +399,10 @@ body {
   height: 6px;
   background-color: #10b981;
   border-radius: 50%;
-  display: inline-block;
-  margin-left: 4px;
-  margin-right: 4px;
-  flex-shrink: 0;
+  position: absolute;
+  top: 18px;
+  left: 33px;
+  z-index: 5;
 }
 
 /* Content area */

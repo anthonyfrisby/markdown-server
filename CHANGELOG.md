@@ -5,7 +5,39 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.1.0] - 2024-12-18
+## [1.2.0] - 2025-06-18
+
+### Added
+- **Hash-based URL Routing**
+  - Direct links to markdown files now work properly (e.g., `#folder/file.md`)
+  - Page refresh preserves the current file being viewed
+  - Bookmarkable URLs for sharing specific files
+  - Browser back/forward navigation between files
+  - Document title updates to show current file name
+
+- **Enhanced Sidebar Navigation**
+  - Automatic expansion of folder tree to show active file location
+  - File validation to ensure URLs point to existing files
+  - Error handling for invalid file paths with graceful fallbacks
+
+- **Improved User Experience**
+  - Sidebar now extends full browser height with proper background
+  - Green dot indicators positioned correctly over folder icons
+  - Better visual hierarchy and clean layout
+
+### Fixed
+- URLs with markdown file paths now load the correct file on page load/refresh
+- Sidebar background now extends to full viewport height
+- Green dot indicators properly positioned as overlay badges on folder icons
+- Invalid file URLs are handled gracefully with console warnings
+
+### Technical Improvements
+- Added `handleInitialRoute()` method for URL hash parsing on page load
+- Enhanced `loadFile()` method with document title updates
+- Added `validateFilePath()` method for file existence checking
+- Improved error handling and user feedback for routing issues
+
+## [1.1.0] - 2025-06-18
 
 ### Added
 - **File Watcher Toggle Button**
@@ -37,7 +69,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New CSS styling for watch toggle button states and animations
 - API endpoints `/api/watch/start` and `/api/watch/stop` now fully utilized
 
-## [1.0.0] - 2024-12-18
+## [1.0.0] - 2025-06-18
 
 ### Added
 - Initial release of Markdown Server
