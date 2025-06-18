@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.1.0] - 2025-06-18
+## [1.1.0] - 2024-12-18
 
 ### Added
 - **File Watcher Toggle Button**
@@ -37,7 +37,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New CSS styling for watch toggle button states and animations
 - API endpoints `/api/watch/start` and `/api/watch/stop` now fully utilized
 
-## [1.0.0] - 2025-06-18
+## [1.0.0] - 2024-12-18
 
 ### Added
 - Initial release of Markdown Server
