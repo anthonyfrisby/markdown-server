@@ -39,7 +39,7 @@ app.use((err, req, res, next) => {
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`🚀 Markdown server running on http://localhost:${PORT}`);
+  console.log(`🚀 Frisbatron Command Center running on http://localhost:${PORT}`);
   console.log(`📁 Serving files from: ${config.rootPath}`);
 });
 

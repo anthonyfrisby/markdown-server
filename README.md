@@ -1,6 +1,6 @@
-# Markdown Server
+# Frisbatron Command Center
 
-A local Node.js server for viewing markdown files with a beautiful, collapsible sidebar interface.
+A powerful command center for viewing and managing markdown documentation with an advanced navigation interface.
 
 ## Features
 
