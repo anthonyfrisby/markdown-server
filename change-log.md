@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.1] - 2025-06-20
+
+### Changed
+- **Dark Theme Color Scheme Update**
+  - Background color changed from #0f172a to #091921 for deeper contrast
+  - Primary text color changed from white to #38c1ca for better readability
+  - Sidebar and header backgrounds set to #0a1c26 (slightly lighter than main background)
+  - Primary accent color (links, selected items) changed from blue (#2563eb) to gold (#bc7d17)
+  - Markdown headings in dark mode now display in cyan (#6ef6ff)
+  - Selected file text in sidebar remains white for clarity
+  - All related hover and secondary colors adjusted proportionally
+
+### Fixed
+- Search input focus shadow color now matches the new primary accent color
+- Primary button text color properly inherits theme colors in dark mode
+
 ## [1.2.0] - 2025-06-18
 
 ### Added
